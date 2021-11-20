@@ -1,5 +1,6 @@
 import 'package:dev_gram/views/home_view.dart';
 import 'package:dev_gram/views/main_view.dart';
+import 'package:dev_gram/views/sign_in_view.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       // home: const HomeView(),
-      home: const MainView(),
+      home: SignInView(),
     );
   }
 }
