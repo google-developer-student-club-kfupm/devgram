@@ -1,20 +1,21 @@
 import 'dart:ui';
 
 import 'package:dev_gram/constants.dart';
-import 'package:dev_gram/views/main_view.dart';
+import 'package:dev_gram/services/auth.dart';
 import 'package:dev_gram/views/sign_in_view.dart';
+import 'package:dev_gram/wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class SignUpView extends StatefulWidget {
-  SignUpView({Key key}) : super(key: key);
+  const SignUpView({Key key}) : super(key: key);
 
   @override
   State<SignUpView> createState() => _SignUpViewState();
 }
 
 class _SignUpViewState extends State<SignUpView> {
-  String username;
+  String email;
   String password;
   String conformPassword;
 
@@ -40,7 +41,7 @@ class _SignUpViewState extends State<SignUpView> {
                   SizedBox(height: 40),
                   TextField(
                     onChanged: (value) {
-                      username = value;
+                      email = value;
                     },
                     decoration: InputDecoration(
                       hintText: 'Email',
@@ -99,10 +100,18 @@ class _SignUpViewState extends State<SignUpView> {
                   SizedBox(height: 10),
                   MaterialButton(
                     height: 40,
-                    onPressed: () {
-                      if ((username?.isNotEmpty ?? false) &&
+                    onPressed: () async {
+                      if ((email?.isNotEmpty ?? false) &&
                           (password?.isNotEmpty ?? false) &&
                           password == conformPassword) {
+                        await Auth.reg(email, password);
+
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => Wrapper(),
+                            ));
+
                         // Sign up
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error, please try again')));

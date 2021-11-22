@@ -1,20 +1,21 @@
 import 'dart:ui';
 
 import 'package:dev_gram/constants.dart';
-import 'package:dev_gram/views/main_view.dart';
+import 'package:dev_gram/services/auth.dart';
 import 'package:dev_gram/views/sign_up_view.dart';
+import 'package:dev_gram/wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class SignInView extends StatefulWidget {
-  SignInView({Key key}) : super(key: key);
+  const SignInView({Key key}) : super(key: key);
 
   @override
   State<SignInView> createState() => _SignInViewState();
 }
 
 class _SignInViewState extends State<SignInView> {
-  String username;
+  String email;
   String password;
 
   @override
@@ -39,7 +40,7 @@ class _SignInViewState extends State<SignInView> {
                   SizedBox(height: 40),
                   TextField(
                     onChanged: (value) {
-                      username = value;
+                      email = value;
                     },
                     decoration: InputDecoration(
                       hintText: 'Email',
@@ -86,13 +87,13 @@ class _SignInViewState extends State<SignInView> {
                   SizedBox(height: 30),
                   MaterialButton(
                     height: 40,
-                    onPressed: () {
-                      if (username == '7b7b' && password == '123') {
-                        print('Login Successes');
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => MainView()));
-                      } else {
-                        print('Login failed');
-                      }
+                    onPressed: () async {
+                      await Auth.signIn(email, password);
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Wrapper(),
+                          ));
                     },
                     color: Color(0xff5ACBFE),
                     child: Text(
