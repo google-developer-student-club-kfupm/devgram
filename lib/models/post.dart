@@ -1,23 +1,31 @@
 import 'dart:convert';
-import 'dart:io';
+
+import 'package:uuid/uuid.dart';
 
 class Post {
-  final String uid;
-  final String imageUrl;
+  String id;
+  final String userId;
   final String comment;
+  String imageUrl;
+
   Post({
-    this.uid,
+    this.id,
+    this.userId,
     this.imageUrl,
     this.comment,
-  });
+  }) {
+    id = id ?? Uuid().v1().toString();
+  }
 
   Post copyWith({
-    String uid,
+    String id,
+    String userId,
     String imageUrl,
     String comment,
   }) {
     return Post(
-      uid: uid ?? this.uid,
+      id: id ?? this.id,
+      userId: userId ?? this.userId,
       imageUrl: imageUrl ?? this.imageUrl,
       comment: comment ?? this.comment,
     );
@@ -25,16 +33,18 @@ class Post {
 
   Map<String, dynamic> toMap() {
     return {
-      'uid': uid,
-      'ImageUrl': imageUrl,
+      'id': id,
+      'userId': userId,
+      'imageUrl': imageUrl,
       'comment': comment,
     };
   }
 
   factory Post.fromMap(Map<String, dynamic> map) {
     return Post(
-      uid: map['uid'],
-      imageUrl: map['ImageUrl'],
+      id: map['id'],
+      userId: map['userId'],
+      imageUrl: map['imageUrl'],
       comment: map['comment'],
     );
   }
@@ -44,18 +54,23 @@ class Post {
   factory Post.fromJson(String source) => Post.fromMap(json.decode(source));
 
   @override
-  String toString() => 'Post(uid: $uid, ImageUrl: $imageUrl, comment: $comment)';
+  String toString() {
+    return 'Post(id: $id, userId: $userId, imageUrl: $imageUrl, comment: $comment)';
+  }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
+
     return other is Post &&
-      other.uid == uid &&
-      other.imageUrl == imageUrl &&
-      other.comment == comment;
+        other.id == id &&
+        other.userId == userId &&
+        other.imageUrl == imageUrl &&
+        other.comment == comment;
   }
 
   @override
-  int get hashCode => uid.hashCode ^ imageUrl.hashCode ^ comment.hashCode;
+  int get hashCode {
+    return id.hashCode ^ userId.hashCode ^ imageUrl.hashCode ^ comment.hashCode;
+  }
 }

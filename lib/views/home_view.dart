@@ -1,11 +1,27 @@
 import 'package:dev_gram/components/post_viewer.dart';
 import 'package:dev_gram/constants.dart';
+import 'package:dev_gram/models/post.dart';
 import 'package:dev_gram/views/add_post_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   const HomeView({Key key}) : super(key: key);
+
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
+  List<Post> posts;
+  
+  @override
+  void initState() {
+    loadPosts();
+    super.initState();
+  }
+
+  loadPosts() async {}
 
   @override
   Widget build(BuildContext context) {
