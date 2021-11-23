@@ -34,7 +34,7 @@ class _AppState extends State<App> {
       builder: (context, snapshot) {
         // Check for errors
         if (snapshot.hasError) {
-          return Container();
+          return Container(color: Colors.red);
         }
 
         // Once complete, show your application
@@ -43,7 +43,7 @@ class _AppState extends State<App> {
         }
 
         // Otherwise, show something whilst waiting for initialization to complete
-        return Container();
+        return Container(color: Colors.blue);
       },
     );
   }

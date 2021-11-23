@@ -2,8 +2,8 @@ import 'package:dev_gram/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class Post extends StatelessWidget {
-  const Post({
+class PostViewer extends StatelessWidget {
+  const PostViewer({
     Key key,
   }) : super(key: key);
 
