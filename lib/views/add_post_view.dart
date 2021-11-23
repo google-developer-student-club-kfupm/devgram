@@ -2,10 +2,11 @@ import 'dart:io';
 
 import 'package:dev_gram/models/post.dart';
 import 'package:dev_gram/services/auth.dart';
-import 'package:dev_gram/services/firebase_storage_serivces.dart';
+import 'package:dev_gram/services/firebase_storage_services.dart';
 import 'package:dev_gram/services/firestore_services.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:uuid/uuid.dart';
 
 class AddPostView extends StatefulWidget {
   const AddPostView({Key key}) : super(key: key);
@@ -28,13 +29,8 @@ class _AddPostViewState extends State<AddPostView> {
     final ImagePicker _picker = ImagePicker();
     // Pick an image
     final XFile pickedImage = await _picker.pickImage(source: ImageSource.gallery);
-    image = File(pickedImage?.path);
-    if (image == null) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("Error, Couldn't pick your image, please try again")));
-      Navigator.pop(context);
-    }
-    print(image?.path);
+
+    image = File(pickedImage.path);
     setState(() {});
   }
 
@@ -54,12 +50,13 @@ class _AddPostViewState extends State<AddPostView> {
           ? SafeArea(
               child: Container(
                 clipBehavior: Clip.hardEdge,
-                margin: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                margin: EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                  boxShadow: const [BoxShadow(color: Colors.black12, blurRadius: 5, spreadRadius: 2)],
-                  borderRadius: BorderRadius.circular(15),
-                ),
+                    color: Colors.white,
+                    boxShadow: const [
+                      BoxShadow(color: Colors.black38, blurRadius: 5, spreadRadius: 5),
+                    ],
+                    borderRadius: BorderRadius.circular(10)),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -85,11 +82,9 @@ class _AddPostViewState extends State<AddPostView> {
                           fillColor: Colors.transparent,
                           filled: true,
                           enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
                             borderSide: BorderSide.none,
                           ),
                           focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
                             borderSide: BorderSide.none,
                           ),
                         ),
@@ -97,13 +92,11 @@ class _AddPostViewState extends State<AddPostView> {
                     ),
                     GestureDetector(
                       onTap: () async {
-                        Post post = Post(comment: comment, userId: Auth.getUser().uid);
-                        post.imageUrl = await FireStorageServices.uploadFile(image, post.id);
-                        if (post.imageUrl != null) {
-                          await FirestoreServices.addPost(post);
-                          print('done!');
-                        }
-                        print('error!');
+                        Post post = Post(userId: Auth.getUser().uid, comment: comment, id: Uuid().v1());
+                        post.imageUrl = await FirebaseStorageServices.uploadPost(image, post.id);
+                        await FirestoreServices.addPost(post);
+                        print("Done!!!");
+                        Navigator.pop(context);
                       },
                       child: Container(
                         height: 40,

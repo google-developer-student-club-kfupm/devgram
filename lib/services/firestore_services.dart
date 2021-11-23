@@ -2,8 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dev_gram/models/post.dart';
 
 class FirestoreServices {
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
-  static CollectionReference users = FirebaseFirestore.instance.collection('users');
   static CollectionReference posts = FirebaseFirestore.instance.collection('posts');
 
   static Future<void> addPost(Post post) {
@@ -12,7 +10,7 @@ class FirestoreServices {
     return posts
         .doc(post.id)
         .set(post.toMap())
-        .then((value) => print("Post Added"))
-        .catchError((error) => print("Failed to add post: $error"));
+        .then((value) => print("Post Added")) // Check if uploading done successfully
+        .catchError((error) => print("Failed to add post: $error")); // Check if any error occur during the process
   }
 }

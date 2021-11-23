@@ -1,33 +1,30 @@
 import 'dart:convert';
 
-import 'package:uuid/uuid.dart';
-
 class Post {
   String id;
-  final String userId;
-  final String comment;
+  String userId;
+  String comment;
   String imageUrl;
-
+  
+  
   Post({
     this.id,
     this.userId,
-    this.imageUrl,
     this.comment,
-  }) {
-    id = id ?? Uuid().v1().toString();
-  }
+    this.imageUrl,
+  });
 
   Post copyWith({
     String id,
     String userId,
-    String imageUrl,
     String comment,
+    String imageUrl,
   }) {
     return Post(
       id: id ?? this.id,
       userId: userId ?? this.userId,
-      imageUrl: imageUrl ?? this.imageUrl,
       comment: comment ?? this.comment,
+      imageUrl: imageUrl ?? this.imageUrl,
     );
   }
 
@@ -35,8 +32,8 @@ class Post {
     return {
       'id': id,
       'userId': userId,
-      'imageUrl': imageUrl,
       'comment': comment,
+      'imageUrl': imageUrl,
     };
   }
 
@@ -44,8 +41,8 @@ class Post {
     return Post(
       id: map['id'],
       userId: map['userId'],
-      imageUrl: map['imageUrl'],
       comment: map['comment'],
+      imageUrl: map['imageUrl'],
     );
   }
 
@@ -55,7 +52,7 @@ class Post {
 
   @override
   String toString() {
-    return 'Post(id: $id, userId: $userId, imageUrl: $imageUrl, comment: $comment)';
+    return 'Post(id: $id, userId: $userId, comment: $comment, imageUrl: $imageUrl)';
   }
 
   @override
@@ -65,12 +62,12 @@ class Post {
     return other is Post &&
         other.id == id &&
         other.userId == userId &&
-        other.imageUrl == imageUrl &&
-        other.comment == comment;
+        other.comment == comment &&
+        other.imageUrl == imageUrl;
   }
 
   @override
   int get hashCode {
-    return id.hashCode ^ userId.hashCode ^ imageUrl.hashCode ^ comment.hashCode;
+    return id.hashCode ^ userId.hashCode ^ comment.hashCode ^ imageUrl.hashCode;
   }
 }
